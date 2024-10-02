@@ -5,7 +5,7 @@ from . import __version__ as app_version
 app_name = "ERP Dev"
 app_title = "ERP Dev Framework"
 app_publisher = "ERP Dev Technologies"
-app_description = "Erp DEvelopers"
+app_description = "Erp Developers"
 app_license = "MIT"
 app_logo_url = "/assets/frappe/images/frappe-framework-logo.svg"
 develop_version = "15.x.x-develop"
