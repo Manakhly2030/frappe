@@ -3,14 +3,14 @@ import os
 from . import __version__ as app_version
 
 app_name = "ERP Dev"
-app_title = "ERP DEV Framework"
-app_publisher = "ERP DEV Technologies"
-app_description = "Full stack web framework with Python, Javascript, MariaDB, Redis, Node"
+app_title = "ERP Dev Framework"
+app_publisher = "ERP Dev Technologies"
+app_description = "Erp DEvelopers"
 app_license = "MIT"
 app_logo_url = "/assets/frappe/images/frappe-framework-logo.svg"
 develop_version = "15.x.x-develop"
 
-app_email = "developers@frappe.io"
+app_email = "manakhly@erp-developers.com"
 
 before_install = "frappe.utils.install.before_install"
 after_install = "frappe.utils.install.after_install"
