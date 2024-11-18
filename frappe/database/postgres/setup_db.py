@@ -5,7 +5,7 @@ from frappe.database.db_manager import DbManager
 from frappe.utils import cint
 
 
-def setup_database(force, source_sql=None, verbose=False):
+def setup_database():
 	root_conn = get_root_connection(frappe.flags.root_login, frappe.flags.root_password)
 	root_conn.commit()
 	root_conn.sql("end")
@@ -24,14 +24,11 @@ def setup_database(force, source_sql=None, verbose=False):
 			root_conn.sql(f'ALTER DATABASE "{frappe.conf.db_name}" OWNER TO "{frappe.conf.db_name}"')
 	root_conn.close()
 
-	bootstrap_database(frappe.conf.db_name, verbose, source_sql=source_sql)
+
+def bootstrap_database(verbose, source_sql=None):
 	frappe.connect()
-
-
-def bootstrap_database(db_name, verbose, source_sql=None):
-	frappe.connect(db_name=db_name)
 	import_db_from_sql(source_sql, verbose)
-	frappe.connect(db_name=db_name)
+	frappe.connect()
 
 	if "tabDefaultValue" not in frappe.db.get_tables():
 		import sys
@@ -40,8 +37,8 @@ def bootstrap_database(db_name, verbose, source_sql=None):
 
 		secho(
 			"Table 'tabDefaultValue' missing in the restored site. "
-			"This may be due to incorrect permissions or the result of a restore from a bad backup file. "
-			"Database not installed correctly.",
+			"This happens when the backup fails to restore. Please check that the file is valid\n"
+			"Do go through the above output to check the exact error message from MariaDB",
 			fg="red",
 		)
 		sys.exit(1)
@@ -77,6 +74,7 @@ def get_root_connection(root_login=None, root_password=None):
 			root_password = getpass("Postgres super user password: ")
 
 		frappe.local.flags.root_connection = frappe.database.get_db(
+			socket=frappe.conf.db_socket,
 			host=frappe.conf.db_host,
 			port=frappe.conf.db_port,
 			user=root_login,
